@@ -1,1 +1,6 @@
 /target
+
+# Wallet files
+/wallets/
+accounts.json
+test*
