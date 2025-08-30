@@ -23,7 +23,7 @@ A Rust implementation of a wallet manager for the Mazzaroth blockchain, inspired
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/mazzaroth-network/rmth.git
 cd rmth
 
 # Build the project
