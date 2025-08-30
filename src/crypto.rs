@@ -74,7 +74,7 @@ pub fn verify_signature(
 
 /// Create a new account manager with BIP39 mnemonic
 pub fn create_account_manager_with_mnemonic(mnemonic: &str) -> Result<AccountManager> {
-    // Generate the first account using m/44'/60'/0'/0/0 derivation path (Ethereum-style)
+    // Generate the first account using m/44'/555555'/0'/0/0 derivation path
     let first_derivation_path = format!("m/44'/{COIN_TYPE}'/0'/0/0");
     let account: AccountKeyPair = generate_keypair_from_mnemonic(mnemonic, &first_derivation_path)?;
 
@@ -177,7 +177,8 @@ mod tests {
     #[test]
     fn test_mnemonic_to_keypair() {
         let mnemonic = "large bread source replace round mesh camera slow squirrel return swing push wrestle law ankle drive carpet survey absent afraid dove mother cluster truly";
-        let keypair = generate_keypair_from_mnemonic(mnemonic, "m/44'/60'/0'/0/0").unwrap();
+        let derivation_path = format!("m/44'/{COIN_TYPE}'/0'/0/0"); 
+        let keypair = generate_keypair_from_mnemonic(mnemonic, &derivation_path).unwrap();
         assert_eq!(keypair.private_key.len(), 32);
         assert_eq!(keypair.public_key.0.len(), 33);
     }
