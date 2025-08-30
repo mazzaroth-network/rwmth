@@ -1,8 +1,7 @@
 use crate::{
     crypto::{
         add_account_from_mnemonic, create_account_manager_with_mnemonic, generate_mnemonic,
-        get_account_info, sign_transaction_data,
-        validate_mnemonic,
+        get_account_info, sign_transaction_data, validate_mnemonic,
     },
     storage::Storage,
     types::{AccountInfo, AccountKeyPair, AccountManager},

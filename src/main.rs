@@ -30,7 +30,7 @@ enum Commands {
     Import {
         /// BIP39 mnemonic phrase (24 words)
         mnemonic: String,
-        
+
         /// Wallet name (optional, defaults to "default")
         #[arg(short, long, default_value = "default")]
         name: String,
@@ -69,60 +69,117 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     let cli = Cli::parse();
-    
+
     // Determine account file path based on wallet name
     let account_file = match &cli.command {
         Commands::New { name } => format!("./wallets/{}.json", name),
         Commands::Import { name, .. } => format!("./wallets/{}.json", name),
         _ => cli.account_file.clone(),
     };
-    
+
     let mut wallet = WalletManager::new(&account_file);
 
     match cli.command {
         Commands::New { name } => {
             info!("Creating new wallet: {}", name);
             let (manager, mnemonic) = wallet.create_wallet()?;
-            println!("✅ Wallet '{}' created successfully!", name);
-            println!("📝 BIP39 Mnemonic (SAVE THIS SECURELY):");
+
+            println!("\n🎉 Wallet Creation Successful!");
+            println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            println!("📁 Wallet Name: {}", name);
+            println!("📂 Storage Path: ./wallets/{}.json", name);
+            println!("🔐 Security Level: BIP39 (256-bit entropy)");
+            println!("🌐 Blockchain: Mazzaroth");
+            println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+            println!("\n⚠️  CRITICAL SECURITY INFORMATION ⚠️");
+            println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            println!("📝 BIP39 Recovery Phrase (24 words):");
             println!("   {}", mnemonic);
-            println!(
-                "🔑 First account address: {}",
-                manager.now_selected_account.get_address()
-            );
+            println!("\n🔒 SECURITY REQUIREMENTS:");
+            println!("   • Write down this phrase on paper");
+            println!("   • Store in a secure, fireproof location");
+            println!("   • Never share with anyone");
+            println!("   • This is your only backup method");
+            println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+            println!("\n💼 Account Information:");
+            println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            println!("🔑 Primary Account Address:");
+            println!("   {}", manager.now_selected_account.get_address());
+            println!("📊 Public Key:");
+            println!("   {}", manager.now_selected_account.public_key.to_hex());
+            println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+            println!("\n🚀 Next Steps:");
+            println!("   • Backup your recovery phrase securely");
+            println!("   • Test with small amounts first");
+            println!("   • Use 'rmth list' to view accounts");
+            println!("   • Use 'rmth info' for wallet details");
+            println!("\n✅ Wallet '{}' is ready for use!", name);
         }
 
         Commands::Import { mnemonic, name } => {
             info!("Importing wallet from mnemonic: {}", name);
             let manager = wallet.import_wallet(&mnemonic)?;
-            println!("✅ Wallet '{}' imported successfully!", name);
-            println!(
-                "🔑 First account address: {}",
-                manager.now_selected_account.get_address()
-            );
+
+            println!("\n🎉 Wallet Import Successful!");
+            println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            println!("📁 Wallet Name: {}", name);
+            println!("📂 Storage Path: ./wallets/{}.json", name);
+            println!("🔐 Security Level: BIP39 (256-bit entropy)");
+            println!("🌐 Blockchain: Mazzaroth");
+            println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+            println!("\n💼 Account Information:");
+            println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            println!("🔑 Primary Account Address:");
+            println!("   {}", manager.now_selected_account.get_address());
+            println!("📊 Public Key:");
+            println!("   {}", manager.now_selected_account.public_key.to_hex());
+            println!("📈 Total Accounts: {}", manager.account_map.len());
+            println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+            println!("\n🚀 Next Steps:");
+            println!("   • Verify your account addresses");
+            println!("   • Use 'rmth list' to view all accounts");
+            println!("   • Use 'rmth info' for wallet details");
+            println!("\n✅ Wallet '{}' imported and ready for use!", name);
         }
 
         Commands::List => {
             info!("Listing accounts");
             let accounts = wallet.list_accounts()?;
             if accounts.is_empty() {
-                println!("No accounts found.");
+                println!("\n💼 No accounts found in this wallet");
+                println!("💡 Add accounts with: rmth add \"your mnemonic phrase\"");
             } else {
-                println!("Accounts in wallet:");
-                for account in accounts {
+                println!("\n💼 Accounts in Wallet:");
+                println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                let total_accounts = accounts.len();
+                for (i, account) in accounts.iter().enumerate() {
                     let status = if account.is_selected {
-                        " (selected)"
+                        " 🔵 SELECTED"
                     } else {
                         ""
                     };
+                    println!("  {}. 🔑 {}", i + 1, account.address);
+                    println!("     📊 Public Key: {}", account.public_key);
                     println!(
-                        "  {}. {} - {}{}",
-                        account.index + 1,
-                        account.address,
-                        account.public_key,
+                        "     📍 Status: {}{}",
+                        if account.is_selected {
+                            "Active"
+                        } else {
+                            "Inactive"
+                        },
                         status
                     );
+                    if i < total_accounts - 1 {
+                        println!("     ──────────────────────────────────────────────");
+                    }
                 }
+                println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                println!("💡 Use 'rmth selected' to view current account details");
             }
         }
 
@@ -133,7 +190,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("No wallets directory found.");
                 return Ok(());
             }
-            
+
             let mut wallets = Vec::new();
             if let Ok(entries) = std::fs::read_dir(wallets_dir) {
                 for entry in entries {
@@ -150,14 +207,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
                 }
             }
-            
+
             if wallets.is_empty() {
-                println!("No wallets found.");
+                println!("\n📁 No wallets found in ./wallets/ directory");
+                println!("💡 Create your first wallet with: rmth new");
             } else {
-                println!("Available wallets:");
+                println!("\n📁 Available Wallets:");
+                println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
                 for (i, wallet_name) in wallets.iter().enumerate() {
-                    println!("  {}. {}", i + 1, wallet_name);
+                    println!("  {}. 📂 {} ({}.json)", i + 1, wallet_name, wallet_name);
                 }
+                println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                println!("💡 Use 'rmth --account-file ./wallets/[name].json [command]' to work with specific wallets");
             }
         }
 

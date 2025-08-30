@@ -177,7 +177,7 @@ mod tests {
     #[test]
     fn test_mnemonic_to_keypair() {
         let mnemonic = "large bread source replace round mesh camera slow squirrel return swing push wrestle law ankle drive carpet survey absent afraid dove mother cluster truly";
-        let derivation_path = format!("m/44'/{COIN_TYPE}'/0'/0/0"); 
+        let derivation_path = format!("m/44'/{COIN_TYPE}'/0'/0/0");
         let keypair = generate_keypair_from_mnemonic(mnemonic, &derivation_path).unwrap();
         assert_eq!(keypair.private_key.len(), 32);
         assert_eq!(keypair.public_key.0.len(), 33);
