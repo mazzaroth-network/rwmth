@@ -1,9 +1,9 @@
 use clap::{Parser, Subcommand};
-use rmth::wallet::WalletManager;
+use rwmth::wallet::WalletManager;
 use tracing::info;
 
 #[derive(Parser)]
-#[command(name = "rmth")]
+#[command(name = "rwmth")]
 #[command(
     about = "Mazzaroth BIP39 Wallet Manager - A Rust implementation for managing Mazzaroth blockchain accounts"
 )]
@@ -114,8 +114,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("\n🚀 Next Steps:");
             println!("   • Backup your recovery phrase securely");
             println!("   • Test with small amounts first");
-            println!("   • Use 'rmth list' to view accounts");
-            println!("   • Use 'rmth info' for wallet details");
+                    println!("   • Use 'rwmth list' to view accounts");
+        println!("   • Use 'rwmth info' for wallet details");
             println!("\n✅ Wallet '{}' is ready for use!", name);
         }
 
@@ -142,8 +142,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             println!("\n🚀 Next Steps:");
             println!("   • Verify your account addresses");
-            println!("   • Use 'rmth list' to view all accounts");
-            println!("   • Use 'rmth info' for wallet details");
+                    println!("   • Use 'rwmth list' to view all accounts");
+        println!("   • Use 'rwmth info' for wallet details");
             println!("\n✅ Wallet '{}' imported and ready for use!", name);
         }
 
@@ -152,7 +152,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let accounts = wallet.list_accounts()?;
             if accounts.is_empty() {
                 println!("\n💼 No accounts found in this wallet");
-                println!("💡 Add accounts with: rmth add \"your mnemonic phrase\"");
+                println!("💡 Add accounts with: rwmth add \"your mnemonic phrase\"");
             } else {
                 println!("\n💼 Accounts in Wallet:");
                 println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
@@ -179,7 +179,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
                 }
                 println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-                println!("💡 Use 'rmth selected' to view current account details");
+                println!("💡 Use 'rwmth selected' to view current account details");
             }
         }
 
@@ -210,7 +210,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             if wallets.is_empty() {
                 println!("\n📁 No wallets found in ./wallets/ directory");
-                println!("💡 Create your first wallet with: rmth new");
+                println!("💡 Create your first wallet with: rwmth new");
             } else {
                 println!("\n📁 Available Wallets:");
                 println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
@@ -218,7 +218,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     println!("  {}. 📂 {} ({}.json)", i + 1, wallet_name, wallet_name);
                 }
                 println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-                println!("💡 Use 'rmth --account-file ./wallets/[name].json [command]' to work with specific wallets");
+                println!("💡 Use 'rwmth --account-file ./wallets/[name].json [command]' to work with specific wallets");
             }
         }
 

@@ -16,7 +16,7 @@ impl StorageManager {
 
     fn get_data_dir() -> String {
         // Use Tauri's app data directory
-        let app_name = "rmth";
+        let app_name = "rwmth";
         let home_dir = dirs::home_dir().unwrap_or_else(|| std::path::PathBuf::from("."));
         let data_dir = home_dir.join(".config").join(app_name);
         

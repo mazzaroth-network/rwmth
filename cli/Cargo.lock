@@ -1230,35 +1230,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rmth"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "base64",
- "bincode",
- "bip39",
- "chrono",
- "clap",
- "hdwallet",
- "hex",
- "hmac",
- "pbkdf2",
- "rand",
- "reqwest",
- "secp256k1 0.28.2",
- "serde",
- "serde_json",
- "sha2",
- "sled",
- "tempfile",
- "thiserror",
- "tokio",
- "tracing",
- "tracing-subscriber",
- "uuid",
-]
-
-[[package]]
 name = "rustc-demangle"
 version = "0.1.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1291,6 +1262,35 @@ name = "rustversion"
 version = "1.0.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d"
+
+[[package]]
+name = "rwmth"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "base64",
+ "bincode",
+ "bip39",
+ "chrono",
+ "clap",
+ "hdwallet",
+ "hex",
+ "hmac",
+ "pbkdf2",
+ "rand",
+ "reqwest",
+ "secp256k1 0.28.2",
+ "serde",
+ "serde_json",
+ "sha2",
+ "sled",
+ "tempfile",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+ "uuid",
+]
 
 [[package]]
 name = "ryu"

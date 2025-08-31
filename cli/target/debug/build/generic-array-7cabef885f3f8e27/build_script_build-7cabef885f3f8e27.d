@@ -1,5 +1,5 @@
-/Users/dk/src/rust/rmth/cli/target/debug/build/generic-array-7cabef885f3f8e27/build_script_build-7cabef885f3f8e27.d: /Users/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/generic-array-0.14.7/build.rs
+/Users/dk/src/rust/rwmth/cli/target/debug/build/generic-array-7cabef885f3f8e27/build_script_build-7cabef885f3f8e27.d: /Users/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/generic-array-0.14.7/build.rs
 
-/Users/dk/src/rust/rmth/cli/target/debug/build/generic-array-7cabef885f3f8e27/build_script_build-7cabef885f3f8e27: /Users/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/generic-array-0.14.7/build.rs
+/Users/dk/src/rust/rwmth/cli/target/debug/build/generic-array-7cabef885f3f8e27/build_script_build-7cabef885f3f8e27: /Users/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/generic-array-0.14.7/build.rs
 
 /Users/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/generic-array-0.14.7/build.rs:

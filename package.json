@@ -1,5 +1,5 @@
 {
-  "name": "rmth",
+  "name": "rwmth",
   "private": true,
   "version": "0.1.0",
   "description": "Mazzaroth Wallet Manager - A Tauri desktop application for managing Mazzaroth blockchain accounts",
