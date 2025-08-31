@@ -2,8 +2,8 @@
 name = "rwmth"
 version = "0.1.0"
 description = "Mazzaroth Wallet Manager - A Tauri desktop application for managing Mazzaroth blockchain accounts"
-authors = ["Your Name <your.email@example.com>"]
-edition = "2021"
+authors = ["dravenk <no-reply@github.com>"]
+edition = "2024"
 license = "MIT"
 
 [lib]

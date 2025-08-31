@@ -1,8 +1,8 @@
+use crate::types::WalletData;
+use anyhow::Result;
+use serde_json;
 use std::fs;
 use std::path::Path;
-use serde_json;
-use anyhow::Result;
-use crate::types::WalletData;
 
 pub struct StorageManager {
     data_dir: String,
@@ -19,12 +19,12 @@ impl StorageManager {
         let app_name = "rwmth";
         let home_dir = dirs::home_dir().unwrap_or_else(|| std::path::PathBuf::from("."));
         let data_dir = home_dir.join(".config").join(app_name);
-        
+
         // Create directory if it doesn't exist
         if !data_dir.exists() {
             fs::create_dir_all(&data_dir).ok();
         }
-        
+
         data_dir.to_string_lossy().to_string()
     }
 
@@ -37,7 +37,7 @@ impl StorageManager {
 
     pub fn load_wallet(&self, wallet_name: &str) -> Result<Option<WalletData>> {
         let file_path = Path::new(&self.data_dir).join(format!("{}.json", wallet_name));
-        
+
         if !file_path.exists() {
             return Ok(None);
         }
@@ -54,7 +54,7 @@ impl StorageManager {
 
     pub fn list_wallets(&self) -> Result<Vec<String>> {
         let mut wallets = Vec::new();
-        
+
         if let Ok(entries) = fs::read_dir(&self.data_dir) {
             for entry in entries {
                 if let Ok(entry) = entry {
@@ -70,7 +70,7 @@ impl StorageManager {
                 }
             }
         }
-        
+
         Ok(wallets)
     }
 
@@ -83,6 +83,9 @@ impl StorageManager {
     }
 
     pub fn get_wallet_path(&self, wallet_name: &str) -> String {
-        Path::new(&self.data_dir).join(format!("{}.json", wallet_name)).to_string_lossy().to_string()
+        Path::new(&self.data_dir)
+            .join(format!("{}.json", wallet_name))
+            .to_string_lossy()
+            .to_string()
     }
 }

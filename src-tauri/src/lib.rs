@@ -3,10 +3,10 @@ pub mod storage;
 pub mod types;
 pub mod wallet;
 
+use crate::types::*;
+use crate::wallet::WalletManager;
 use std::sync::Mutex;
 use tauri::State;
-use crate::wallet::WalletManager;
-use crate::types::*;
 
 // Global wallet manager state
 type WalletState = Mutex<WalletManager>;
@@ -17,7 +17,8 @@ async fn create_wallet(
     state: State<'_, WalletState>,
 ) -> Result<CreateWalletResponse, String> {
     let mut wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.create_wallet(&wallet_name)
+    wallet_manager
+        .create_wallet(&wallet_name)
         .map_err(|e| e.to_string())
 }
 
@@ -28,45 +29,36 @@ async fn import_wallet(
     state: State<'_, WalletState>,
 ) -> Result<ImportWalletResponse, String> {
     let mut wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.import_wallet(&wallet_name, &mnemonic)
+    wallet_manager
+        .import_wallet(&wallet_name, &mnemonic)
         .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-async fn load_wallet(
-    wallet_name: String,
-    state: State<'_, WalletState>,
-) -> Result<bool, String> {
+async fn load_wallet(wallet_name: String, state: State<'_, WalletState>) -> Result<bool, String> {
     let mut wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.load_wallet(&wallet_name)
+    wallet_manager
+        .load_wallet(&wallet_name)
         .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-async fn list_wallets(
-    state: State<'_, WalletState>,
-) -> Result<Vec<String>, String> {
+async fn list_wallets(state: State<'_, WalletState>) -> Result<Vec<String>, String> {
     let wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.list_wallets()
-        .map_err(|e| e.to_string())
+    wallet_manager.list_wallets().map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-async fn list_accounts(
-    state: State<'_, WalletState>,
-) -> Result<Vec<AccountInfo>, String> {
+async fn list_accounts(state: State<'_, WalletState>) -> Result<Vec<AccountInfo>, String> {
     let wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.list_accounts()
-        .map_err(|e| e.to_string())
+    wallet_manager.list_accounts().map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-async fn select_account(
-    index: usize,
-    state: State<'_, WalletState>,
-) -> Result<(), String> {
+async fn select_account(index: usize, state: State<'_, WalletState>) -> Result<(), String> {
     let mut wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.select_account(index)
+    wallet_manager
+        .select_account(index)
         .map_err(|e| e.to_string())
 }
 
@@ -75,7 +67,8 @@ async fn get_selected_account(
     state: State<'_, WalletState>,
 ) -> Result<Option<AccountInfo>, String> {
     let wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.get_selected_account()
+    wallet_manager
+        .get_selected_account()
         .map_err(|e| e.to_string())
 }
 
@@ -85,17 +78,15 @@ async fn add_account(
     state: State<'_, WalletState>,
 ) -> Result<AccountInfo, String> {
     let mut wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.add_account(&mnemonic)
+    wallet_manager
+        .add_account(&mnemonic)
         .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-async fn create_account(
-    state: State<'_, WalletState>,
-) -> Result<AccountInfo, String> {
+async fn create_account(state: State<'_, WalletState>) -> Result<AccountInfo, String> {
     let mut wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.create_account()
-        .map_err(|e| e.to_string())
+    wallet_manager.create_account().map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -104,17 +95,15 @@ async fn sign_transaction(
     state: State<'_, WalletState>,
 ) -> Result<SignTransactionResponse, String> {
     let wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.sign_transaction(&data)
+    wallet_manager
+        .sign_transaction(&data)
         .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-async fn get_wallet_info(
-    state: State<'_, WalletState>,
-) -> Result<Option<WalletInfo>, String> {
+async fn get_wallet_info(state: State<'_, WalletState>) -> Result<Option<WalletInfo>, String> {
     let wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.get_wallet_info()
-        .map_err(|e| e.to_string())
+    wallet_manager.get_wallet_info().map_err(|e| e.to_string())
 }
 
 #[tauri::command]

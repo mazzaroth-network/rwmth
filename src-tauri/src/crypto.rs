@@ -1,11 +1,11 @@
-use secp256k1::{PublicKey, SecretKey, Secp256k1};
-use sha2::{Digest, Sha256};
-use rand::Rng;
-use hex;
-use pbkdf2::pbkdf2;
-use hmac::Hmac;
-use bip39::{Mnemonic, Language};
 use anyhow::Result;
+use bip39::{Language, Mnemonic};
+use hex;
+use hmac::Hmac;
+use pbkdf2::pbkdf2;
+use rand::Rng;
+use secp256k1::{PublicKey, Secp256k1, SecretKey};
+use sha2::{Digest, Sha256};
 
 pub struct CryptoManager;
 
@@ -13,7 +13,7 @@ impl CryptoManager {
     /// Generate a new BIP39 mnemonic phrase
     pub fn generate_mnemonic() -> Result<String> {
         let mut rng = rand::thread_rng();
-        let entropy: [u8; 32] = rng.gen();
+        let entropy: [u8; 32] = rng.r#gen();
         let mnemonic = Mnemonic::from_entropy_in(Language::English, &entropy)?;
         Ok(mnemonic.to_string())
     }
@@ -22,11 +22,11 @@ impl CryptoManager {
     pub fn derive_private_key(mnemonic: &str, _path: &str) -> Result<SecretKey> {
         let mnemonic = Mnemonic::parse_in_normalized(Language::English, mnemonic)?;
         let seed = mnemonic.to_seed("");
-        
+
         // Use the first 32 bytes of the seed as private key
         let mut private_key = [0u8; 32];
         private_key.copy_from_slice(&seed[..32]);
-        
+
         Ok(SecretKey::from_slice(&private_key)?)
     }
 
@@ -60,7 +60,7 @@ impl CryptoManager {
     pub fn encrypt_data(data: &[u8], password: &str, salt: &[u8]) -> Result<Vec<u8>> {
         let mut key = [0u8; 32];
         let _ = pbkdf2::<Hmac<Sha256>>(password.as_bytes(), salt, 10000, &mut key);
-        
+
         // Simple XOR encryption (in production, use proper encryption)
         let mut encrypted = Vec::new();
         for (i, &byte) in data.iter().enumerate() {
@@ -73,7 +73,7 @@ impl CryptoManager {
     pub fn decrypt_data(encrypted_data: &[u8], password: &str, salt: &[u8]) -> Result<Vec<u8>> {
         let mut key = [0u8; 32];
         let _ = pbkdf2::<Hmac<Sha256>>(password.as_bytes(), salt, 10000, &mut key);
-        
+
         // Simple XOR decryption
         let mut decrypted = Vec::new();
         for (i, &byte) in encrypted_data.iter().enumerate() {

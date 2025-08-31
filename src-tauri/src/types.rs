@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Account {
@@ -13,7 +13,12 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new(address: String, public_key: String, private_key_encrypted: Vec<u8>, salt: Vec<u8>) -> Self {
+    pub fn new(
+        address: String,
+        public_key: String,
+        private_key_encrypted: Vec<u8>,
+        salt: Vec<u8>,
+    ) -> Self {
         Self {
             address,
             public_key,
@@ -86,11 +91,13 @@ impl WalletData {
     }
 
     pub fn get_selected_account(&self) -> Option<&Account> {
-        self.selected_account_index.and_then(|index| self.accounts.get(index))
+        self.selected_account_index
+            .and_then(|index| self.accounts.get(index))
     }
 
     pub fn get_selected_account_mut(&mut self) -> Option<&mut Account> {
-        self.selected_account_index.and_then(|index| self.accounts.get_mut(index))
+        self.selected_account_index
+            .and_then(|index| self.accounts.get_mut(index))
     }
 }
 
