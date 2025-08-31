@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { AccountInfo } from '../types';
 
+// Mazzaroth coin type for BIP44 derivation
+const COIN_TYPE = 55555;
+
 interface WalletOverviewProps {
   selectAccount: (index: number) => void;
   accounts: AccountInfo[];
