@@ -6,4 +6,7 @@
 # will have schema files for capabilities auto-completion
 /gen/schemas
 
-cli/target
+/cli/target
+/cli/Cargo.lock
+/src-tauri/target
+/src-tauri/Cargo.lock
