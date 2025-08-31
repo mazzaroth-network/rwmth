@@ -4,6 +4,7 @@ import "./App.css";
 import Sidebar from "./components/Sidebar";
 import MainContent from "./components/MainContent";
 import TopMenuBar from "./components/TopMenuBar";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { MenuItem, AccountInfo, WalletInfo, CreateWalletResponse, ImportWalletResponse, SignTransactionResponse } from "./types";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
@@ -103,18 +104,24 @@ function App() {
   async function loadWallet(walletName: string) {
     try {
       setLoading(true);
+      console.log('Loading wallet:', walletName);
       const success = await invoke<boolean>("load_wallet", {
         walletName: walletName,
       });
 
+      console.log('Load wallet result:', success);
       if (success) {
         setCurrentWallet(walletName);
+        console.log('Wallet loaded, loading accounts...');
         await loadAccounts();
+        console.log('Accounts loaded, loading wallet info...');
         await loadWalletInfo();
+        console.log('Wallet info loaded');
       } else {
         setMessage("Failed to load wallet");
       }
     } catch (error) {
+      console.error('Error loading wallet:', error);
       setMessage(`Error loading wallet: ${error}`);
     } finally {
       setLoading(false);
@@ -132,18 +139,24 @@ function App() {
 
   async function loadAccounts() {
     try {
+      console.log('Loading accounts...');
       const accountList = await invoke<AccountInfo[]>("list_accounts");
+      console.log('Accounts loaded:', accountList);
       setAccounts(accountList);
     } catch (error) {
+      console.error('Error loading accounts:', error);
       setMessage(`Error loading accounts: ${error}`);
     }
   }
 
   async function loadWalletInfo() {
     try {
+      console.log('Loading wallet info...');
       const info = await invoke<WalletInfo | null>("get_wallet_info");
+      console.log('Wallet info loaded:', info);
       setWalletInfo(info);
     } catch (error) {
+      console.error('Error loading wallet info:', error);
       setMessage(`Error loading wallet info: ${error}`);
     }
   }
@@ -224,48 +237,50 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="app">
-        <TopMenuBar />
-        <div className="app-content">
-          <Sidebar
-            menuCollapsed={menuCollapsed}
-            setMenuCollapsed={setMenuCollapsed}
-            activeMenu={activeMenu}
-            setActiveMenu={handleMenuChange}
-          />
-                      <MainContent
+      <ErrorBoundary>
+        <div className="app">
+          <TopMenuBar />
+          <div className="app-content">
+            <Sidebar
+              menuCollapsed={menuCollapsed}
+              setMenuCollapsed={setMenuCollapsed}
+              activeMenu={activeMenu}
+              setActiveMenu={handleMenuChange}
+            />
+            <MainContent
               activeMenu={activeMenu}
               message={message}
               setMessage={setMessage}
               currentWallet={currentWallet}
-            wallets={wallets}
-            newWalletName={newWalletName}
-            setNewWalletName={setNewWalletName}
-            mnemonic={mnemonic}
-            setMnemonic={setMnemonic}
-            loading={loading}
-            createWallet={createWallet}
-            importWallet={importWallet}
-            loadWallet={loadWallet}
-            returnToWalletSelection={returnToWalletSelection}
-            addAccount={addAccount}
-            createAccount={createAccount}
-            selectAccount={selectAccount}
-            accounts={accounts}
-            walletInfo={walletInfo}
-            sendAmount={sendAmount}
-            setSendAmount={setSendAmount}
-            sendAddress={sendAddress}
-            setSendAddress={setSendAddress}
-            transactionData={transactionData}
-            setTransactionData={setTransactionData}
-            signTransaction={signTransaction}
-            signature={signature}
-            menuCollapsed={menuCollapsed}
-            setMenuCollapsed={setMenuCollapsed}
-          />
+              wallets={wallets}
+              newWalletName={newWalletName}
+              setNewWalletName={setNewWalletName}
+              mnemonic={mnemonic}
+              setMnemonic={setMnemonic}
+              loading={loading}
+              createWallet={createWallet}
+              importWallet={importWallet}
+              loadWallet={loadWallet}
+              returnToWalletSelection={returnToWalletSelection}
+              addAccount={addAccount}
+              createAccount={createAccount}
+              selectAccount={selectAccount}
+              accounts={accounts}
+              walletInfo={walletInfo}
+              sendAmount={sendAmount}
+              setSendAmount={setSendAmount}
+              sendAddress={sendAddress}
+              setSendAddress={setSendAddress}
+              transactionData={transactionData}
+              setTransactionData={setTransactionData}
+              signTransaction={signTransaction}
+              signature={signature}
+              menuCollapsed={menuCollapsed}
+              setMenuCollapsed={setMenuCollapsed}
+            />
+          </div>
         </div>
-      </div>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }
