@@ -13,32 +13,32 @@ type WalletState = Mutex<WalletManager>;
 
 #[tauri::command]
 async fn create_wallet(
-    walletName: String,
+    wallet_name: String,
     state: State<'_, WalletState>,
 ) -> Result<CreateWalletResponse, String> {
     let mut wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.create_wallet(&walletName)
+    wallet_manager.create_wallet(&wallet_name)
         .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn import_wallet(
-    walletName: String,
+    wallet_name: String,
     mnemonic: String,
     state: State<'_, WalletState>,
 ) -> Result<ImportWalletResponse, String> {
     let mut wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.import_wallet(&walletName, &mnemonic)
+    wallet_manager.import_wallet(&wallet_name, &mnemonic)
         .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn load_wallet(
-    walletName: String,
+    wallet_name: String,
     state: State<'_, WalletState>,
 ) -> Result<bool, String> {
     let mut wallet_manager = state.lock().map_err(|_| "Failed to lock wallet manager")?;
-    wallet_manager.load_wallet(&walletName)
+    wallet_manager.load_wallet(&wallet_name)
         .map_err(|e| e.to_string())
 }
 

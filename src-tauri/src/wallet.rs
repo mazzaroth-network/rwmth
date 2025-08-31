@@ -158,7 +158,7 @@ impl WalletManager {
         // For now, we'll use the same logic as add_account but without requiring mnemonic
         // In a real implementation, we'd derive from the wallet's master seed
         let account_index = wallet_data.accounts.len();
-        let path = format!("m/44'/{COIN_TYPE}'/0'/0/{}", account_index);
+        let _path = format!("m/44'/{COIN_TYPE}'/0'/0/{}", account_index);
         
         // Generate a new private key for this account
         let private_key = secp256k1::SecretKey::new(&mut rand::thread_rng());
