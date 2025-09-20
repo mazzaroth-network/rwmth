@@ -1,11 +1,13 @@
 import React from 'react';
-import { MenuItem } from '../types';
+import { MenuItem, AccountInfo } from '../types';
 
 interface SidebarProps {
   menuCollapsed: boolean;
   setMenuCollapsed: (collapsed: boolean) => void;
   activeMenu: MenuItem;
   setActiveMenu: (menu: MenuItem) => void;
+  currentWallet?: string;
+  selectedAccount?: AccountInfo | null;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -13,13 +15,43 @@ const Sidebar: React.FC<SidebarProps> = ({
   setMenuCollapsed,
   activeMenu,
   setActiveMenu,
+  currentWallet,
+  selectedAccount,
 }) => {
   return (
     <div className={`sidebar ${menuCollapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-header">
-        <h1 className={menuCollapsed ? "collapsed" : ""}>
-          {menuCollapsed ? "MW" : "Mazzaroth Wallet"}
-        </h1>
+        {currentWallet ? (
+          <div className="wallet-info-header">
+            {menuCollapsed ? (
+              <div className="wallet-info-collapsed">
+                <div className="wallet-account-card-collapsed">
+                  <div className="wallet-icon">💎</div>
+                  <div className="account-icon">👤</div>
+                </div>
+              </div>
+            ) : (
+              <div className="wallet-account-card">
+                <div className="card-header">
+                  <span className="wallet-icon">💎</span>
+                  <span className="wallet-title">{currentWallet}</span>
+                </div>
+                {selectedAccount && (
+                  <div className="card-content">
+                    <span className="account-icon">👤</span>
+                    <span className="account-title">
+                      {selectedAccount.address.slice(0, 8)}...{selectedAccount.address.slice(-6)}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          <h1 className={menuCollapsed ? "collapsed" : ""}>
+            {menuCollapsed ? "MW" : "Mazzaroth Wallet"}
+          </h1>
+        )}
       </div>
 
       <nav className="sidebar-nav">

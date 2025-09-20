@@ -235,6 +235,9 @@ function App() {
     }
   }
 
+  // 获取当前选中的账户信息
+  const selectedAccount = accounts.find(account => account.is_selected) || null;
+
   return (
     <ThemeProvider>
       <ErrorBoundary>
@@ -246,6 +249,8 @@ function App() {
               setMenuCollapsed={setMenuCollapsed}
               activeMenu={activeMenu}
               setActiveMenu={handleMenuChange}
+              currentWallet={currentWallet}
+              selectedAccount={selectedAccount}
             />
             <MainContent
               activeMenu={activeMenu}
